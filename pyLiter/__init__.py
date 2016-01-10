@@ -1,1 +1,1 @@
-__all__ = ["Lights", "PiLiter"]
+__all__ = ["LightHardware", "LightState", "PiLiter", "TermLiter"]
