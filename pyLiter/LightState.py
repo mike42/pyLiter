@@ -11,11 +11,14 @@ class LightState(object):
 
     def shiftLeft(self, num):
         # TODO implement shiftLeft
-        return LightState(self._values)
+        newVals = self._values[1:]
+        newVals.append(self._values[0])
+        return LightState(newVals)
 
     def shiftRight(self, num):
-        # TODO implement shiftRight
-        return LightState(self._values)
+        newVals = [self._values[7]] + self._values[:7]
+        print(len(newVals))
+        return LightState(newVals)
 
     def logicalAnd(self, other):
         # TODO implement logicalAnd

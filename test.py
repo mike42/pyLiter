@@ -4,12 +4,22 @@ from pyLiter.LightState import LightState
 
 a = MagickLiter()
 
-a.values = LightState.clear()
+#a.values = LightState.clear()
 
-for i in range(0,9):
-	a.values = LightState.bar(i / 8)
+#for i in range(0,9):
+#	a.values = LightState.bar(i / 8)
+#
+#a.values = LightState.clear()
 
-
+state = LightState([0, 0, 0, 0, 0, 0, 0, 1])
+a.values = state
+#for i in range(0, 5):
+for i in range(15):
+	state = state.shiftLeft(1)
+	a.values = state
+	#for i in range(7):
+	#	state = state.shiftRight(1)
+	#	a.values = state
 
 #a.clear()
 #
