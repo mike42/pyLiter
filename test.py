@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
-from pyLiter.TermLiter import TermLiter
+from pyLiter.MagickLiter import MagickLiter
 from pyLiter.LightState import LightState
 
-a = TermLiter()
+a = MagickLiter()
 
 a.values = LightState.clear()
 
-a.values = LightState.bar(0.5)
+for i in range(0,9):
+	a.values = LightState.bar(i / 8)
+
+
 
 #a.clear()
 #
