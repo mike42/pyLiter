@@ -10,7 +10,6 @@ class LightState(object):
         return self._values == other._values
 
     def shiftLeft(self, num):
-        # TODO implement shiftLeft
         newVals = self._values[1:]
         newVals.append(self._values[0])
         return LightState(newVals)

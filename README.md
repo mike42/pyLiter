@@ -28,3 +28,18 @@ Execute the test script with:
 
     python test.py
 
+## Development
+
+Execute unit tests with:
+
+    python -m unittest discover
+
+Install coverage plugin:
+
+    apt-get install python-coverage
+    yum install python-coverage
+
+Run with coverage:
+
+    coverage run -m unittest discover
+
