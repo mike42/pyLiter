@@ -26,26 +26,32 @@ class LightState(object):
     def __and__(self, other):
         curVals = self._values[:]
         for i in range(8):
-            curVals[i] = 0
-        #otherVals = other._values
-        # TODO implement logicalAnd
-        return LightState(self._values)
+            curVals[i] = 1 if (curVals[i] == 1 and other._values[i] == 1) else 0
+        return LightState(curVals)
 
     def __or__(self, other):
-        # TODO implement logicalOr
-        return LightState(self._values)
+        curVals = self._values[:]
+        for i in range(8):
+            curVals[i] = 1 if (curVals[i] == 1 or other._values[i] == 1) else 0
+        return LightState(curVals)
 
     def __xor__(self, other):
-        # TODO implement logicalXor
-        return LightState(self._values)
+        curVals = self._values[:]
+        for i in range(8):
+            a = curVals[i] == 1
+            b = other._values[i] == 1
+            curVals[i] = 1 if ((a or b) and not (a and b)) else 0
+        return LightState(curVals)
 
-    def logicalNot(self):
-        # TODO implement logicalNot
-        return LightState(self._values)
+    def __invert__(self):
+        curVals = self._values[:]
+        for i in range(8):
+            curVals[i] = 0 if curVals[i] == 1 else 1
+        return LightState(curVals)
 
     def diff(self, other):
         changes = {}
-        for lightId in range(len(self._values)):
+        for lightId in range(self.size):
             updatedVal = other._values[lightId]
             if updatedVal != -1 and self._values[lightId] != updatedVal:
                 changes[lightId] = updatedVal

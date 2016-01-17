@@ -44,10 +44,45 @@ class TestLightState(unittest.TestCase):
         a = LightState([1, 1, 1, 1, 1, 1, 1, 1])
         b = LightState([0, 0, 0, 0, 0, 0, 0, 0])
         c = LightState([1, 0, 1, 0, 0, 1, 0, 0])
-        #print(a >> 2)
-        #self.assertEqual(a, b)
-        #self.assertNotEqual(a, c)
-        #self.assertNotEqual(b, c)
+        d = a & b
+        self.assertEqual(d._values, [0, 0, 0, 0, 0, 0, 0, 0])
+        d = b & c
+        self.assertEqual(d._values, [0, 0, 0, 0, 0, 0, 0, 0])
+        d = c & a
+        self.assertEqual(d._values, [1, 0, 1, 0, 0, 1, 0, 0])
+
+    def testOr(self):
+        a = LightState([1, 1, 1, 1, 1, 1, 1, 1])
+        b = LightState([0, 0, 0, 0, 0, 0, 0, 0])
+        c = LightState([1, 0, 1, 0, 0, 1, 0, 0])
+        d = a | b
+        self.assertEqual(d._values, [1, 1, 1, 1, 1, 1, 1, 1])
+        d = b | c
+        self.assertEqual(d._values, [1, 0, 1, 0, 0, 1, 0, 0])
+        d = c | a
+        self.assertEqual(d._values, [1, 1, 1, 1, 1, 1, 1, 1])
+
+    def testXor(self):
+        a = LightState([1, 1, 1, 1, 1, 1, 1, 1])
+        b = LightState([0, 0, 0, 0, 0, 0, 0, 0])
+        c = LightState([1, 0, 1, 0, 0, 1, 0, 0])
+        d = a ^ b
+        self.assertEqual(d._values, [1, 1, 1, 1, 1, 1, 1, 1])
+        d = b ^ c
+        self.assertEqual(d._values, [1, 0, 1, 0, 0, 1, 0, 0])
+        d = c ^ a
+        self.assertEqual(d._values, [0, 1, 0, 1, 1, 0, 1, 1])
+
+    def testInvert(self):
+        a = LightState([1, 1, 1, 1, 1, 1, 1, 1])
+        b = LightState([0, 0, 0, 0, 0, 0, 0, 0])
+        c = LightState([1, 0, 1, 0, 0, 1, 0, 0])
+        d = ~a
+        self.assertEqual(d._values, [0, 0, 0, 0, 0, 0, 0, 0])
+        d = ~b
+        self.assertEqual(d._values, [1, 1, 1, 1, 1, 1, 1, 1])
+        d = ~c
+        self.assertEqual(d._values, [0, 1, 0, 1, 1, 0, 1, 1])
 
 
 if __name__ == '__main__':
