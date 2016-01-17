@@ -9,25 +9,33 @@ class LightState(object):
     def __eq__ (self, other):
         return self._values == other._values
 
-    def shiftLeft(self, num):
-        newVals = self._values[1:]
-        newVals.append(self._values[0])
-        return LightState(newVals)
+    def __lshift__(self, other):
+        curVals = self._values[:]
+        for _ in range(other):
+            nextVals = curVals[1:]
+            nextVals.append(curVals[0])
+            curVals = nextVals
+        return LightState(curVals)
 
-    def shiftRight(self, num):
-        newVals = [self._values[7]] + self._values[:7]
-        print(len(newVals))
-        return LightState(newVals)
+    def __rshift__(self, other):
+        curVals = self._values[:]
+        for _ in range(other):
+            curVals = [curVals[7]] + curVals[:7]
+        return LightState(curVals)
 
-    def logicalAnd(self, other):
+    def __and__(self, other):
+        curVals = self._values[:]
+        for i in range(8):
+            curVals[i] = 0
+        #otherVals = other._values
         # TODO implement logicalAnd
         return LightState(self._values)
 
-    def logicalOr(self, other):
+    def __or__(self, other):
         # TODO implement logicalOr
         return LightState(self._values)
 
-    def logicalXor(self, other):
+    def __xor__(self, other):
         # TODO implement logicalXor
         return LightState(self._values)
 
