@@ -1,34 +1,92 @@
 #!/usr/bin/env python3
-from pyLiter.MagickLiter import MagickLiter
+from pyLiter.TermLiter import TermLiter
 from pyLiter.LightState import LightState
+import threading
+import time
+import Queue
+import math
+from threading import Lock
 
+class LiterThread (threading.Thread):  
+    def __init__(self, liter):
+        threading.Thread.__init__(self)
+        self.liter = liter
+        self.frameRate = 10
+        self._shutdown = False
+        self._shutdownWhenComplete = False
+        self._skip = False
+        self.animQueue = Queue.Queue()
 
-#a.values = LightState.clear()
+    def put(self, animation):
+        self.animQueue.put(animation)
 
-#for i in range(0,9):
-#	a.values = LightState.bar(i / 8)
-#
-#a.values = LightState.clear()
+    def putFrame(self, item):
+        self.enque(LiterThread.wrapFrame(item))
 
-state = LightState([0, 0, 0, 0, 0, 1, 1, 1])
-a.values = state
-#for i in range(0, 5):
-for i in range(15):
-    state = state.shiftLeft(1)
-    a.values = state
-    #for i in range(7):
-    #	state = state.shiftRight(1)
-    #	a.values = state
+    def run(self):
+        # Set up liter and delay
+        self.liter.values = LightState.clear()
+        delay = 1.0 / self.frameRate;
+        while not self._shutdown:
+            try:
+                a = self.animQueue.get(True, delay)
+                if self._skip and not self.animQueue.empty():
+                    continue
+                self._skip = False
+                for i in a():
+                    self.liter.values = i
+                    if self._shutdown or self._skip:
+                        break;
+                    time.sleep(delay)
+            except Queue.Empty:
+                if self._shutdownWhenComplete:
+                    self._shutdown = True
+                continue
+        self._shutdown = True
+    
+    def stop(self):
+        self._shutdown = True
+        self.join()
+    
+    def wait(self):
+        self._shutdownWhenComplete = True
+        self.join()
 
-#a.clear()
-#
-#a.values = [0, 0, 0, 0, 1, 0, 0, 0]
+    def cutTo(self, animation):
+        self.put(animation)
+        self._skip = True
+    
+#    def cutToFrame(self, animation):
+#        self.
+#        pass
+    
+    @staticmethod
+    def wrapState(state):
+        yield state
 
-#print a.values
-#a.blink([1,1,1,1,1,1,1,1])
+#class LightAnimation(object):
 
-#print a.values
+# TODO some subclassing or something
 
-#a.marquee([0, 1, 0, 1, 0, 1, 0, 1])
-#print a.values
+class SineWaves:
+    def __init__(self):
+        self.a = 100
 
+    def frames(self):
+        for i in range(0, self.a):
+            yield LightState.bar(math.sin(i / 5.0) / 2.0 + 0.5)
+        # math.sin(i / 100) / 2 + 0.5)
+
+if __name__ == '__main__':
+    liter = TermLiter()
+    a = LiterThread(liter)
+    a._shutdownWhenComplete = True
+    a.start()
+    try:
+        a.put(SineWaves().frames)
+        while a.isAlive():
+            a.join(1)
+    except KeyboardInterrupt:
+        a.stop()
+
+    print("Exiting main thread")
