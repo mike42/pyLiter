@@ -1,5 +1,7 @@
+from __future__ import absolute_import, division, print_function
+
 import unittest
-from LightState import LightState
+from pyLiter.LightState import LightState
 
 class TestLightState(unittest.TestCase):
     def testShiftLeft(self):

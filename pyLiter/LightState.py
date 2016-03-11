@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function
+
 class LightState(object):
     """ Maintain a list of light states, provide methods for running calculations over them"""
     size = 8

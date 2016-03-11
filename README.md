@@ -21,7 +21,7 @@ Execute the test script with:
 
 ### Python 2
 
-    sudo apt-get install python python-pip
+    sudo apt-get install python python-pip python-future
     pip install wiringpi2
 
 Execute the test script with:

@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function
+
 import wiringpi2 as wiringpi
 
 from pyLiter import LightHardware
